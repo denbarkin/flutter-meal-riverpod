@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/providers/favorites_provider.dart';
-import 'package:meals/providers/meals_provider.dart';
 
 class MealDetailsScreen extends ConsumerWidget {
   const MealDetailsScreen({
@@ -16,6 +15,8 @@ class MealDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    bool isFav = ref.watch(favoriteMealsProvider).contains(meal);
+
     return Scaffold(
         appBar: AppBar(title: Text(meal.title), actions: [
           IconButton(
@@ -32,7 +33,7 @@ class MealDetailsScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.star),
+            icon: Icon(isFav ? Icons.star : Icons.star_border),
           )
         ]),
         body: SingleChildScrollView(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals/providers/favorites_provider.dart';
 import '../providers/filters_provider.dart';
-import '../providers/meals_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories.dart';
@@ -73,25 +72,8 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   Widget build(BuildContext context) {
     // ConsumerState add referance watch to get data from provider to
     // setup a listener as ref data changed.
-    final meals = ref.watch(mealsProvider);
     final favoriteMeals = ref.watch(favoriteMealsProvider);
-    final selectedFilters = ref.watch(filtersProvider);
-
-    final availableMeals = meals.where((meal) {
-      if (selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
-        return false;
-      }
-      if (selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
-        return false;
-      }
-      if (selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
-        return false;
-      }
-      if (selectedFilters[Filter.vegan]! && !meal.isVegan) {
-        return false;
-      }
-      return true;
-    }).toList();
+    final availableMeals = ref.watch(filteredMailsProvider);
 
     Widget activePage = CategoriesScreen(
       onToggleFavorite: _toggleMealFavoriteStatus,
